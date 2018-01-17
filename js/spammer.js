@@ -23,29 +23,50 @@ function Spammer({iotaObj, curlObj}) {
     });
   })
 
-  return {
-    initialize: () => new Promise((resolve, reject) => {
-      Promise.all([getNewAddress(sendingSeed), getNewAddress(receivingSeed)]).then((addresses) => {
-        sengindAddress = addresses[0];
-        receivingAddress = addresses[1];
-        resolve({
-          sendingSeed,
-          receivingSeed,
-          sendingAddress,
-          receivingAddress
-        })
+  var spamming = false;
+  var spamCount = 0;
+
+  const init = () => new Promise((resolve, reject) => {
+    Promise.all([getNewAddress(sendingSeed), getNewAddress(receivingSeed)]).then(addresses => {
+      sengindAddress = addresses[0];
+      receivingAddress = addresses[1];
+      resolve({
+        sendingSeed,
+        receivingSeed,
+        sendingAddress,
+        receivingAddress
       })
-    }),
+    })
+  });
 
-    singleSpam: () => {
-      const transaction = new Transaction({ iotaObj, curlObj, sendingSeed, receivingAddress });
-      transaction.sendTransfer();
-    },
+  const singleSpam = () => new Promise((resolve, reject) => {
+    const transaction = new Transaction({ iotaObj, curlObj, sendingSeed, receivingAddress });
+    transaction.sendTransfer().then(resolve);
+  });
 
-    start: () => {},
+  const start = () => {
+    const spam = () => {
+      if (!spamming) return;
+      spamCount++;
+      console.log('Start spam #' + spamCount);
+      singleSpam().then(() => {
+        console.log('Completed spam #' + spamCount);
+        spam();
+      });
+    };
+    spamming = true;
+    spam();
+  };
 
-    stop: () => {},
+  const stop = () => {
+    spamming = false;
+  };
 
+  return {
+    init,
+    singleSpam,
+    start,
+    stop,
     setFrequency: (frequency) => {}
   }
 };
