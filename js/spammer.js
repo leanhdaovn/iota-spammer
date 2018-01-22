@@ -9,7 +9,15 @@ function Spammer({iotaObj, curlObj}) {
   const sendingSeed = generateSeed();
   const receivingSeed = generateSeed();
 
-  console.log({ sendingSeed, receivingSeed });
+  const displayTransactions = () => {
+    var trxListEle = document.getElementById('trx-list');
+    var trxListItems = transactions.map(trx => {
+      return `<li><a href="https://thetangle.org/transaction/${trx.hash}">${trx.hash}</a></li>`;
+    });
+    trxListEle.innerHTML = trxListItems.join('');
+  }
+
+  // console.log({ sendingSeed, receivingSeed });
 
   var sendingAddress, receivingAddress, inputs, trytes;
 
@@ -39,19 +47,59 @@ function Spammer({iotaObj, curlObj}) {
     })
   });
 
-  const singleSpam = () => new Promise((resolve, reject) => {
+  const checkReference = transactionHash => new Promise((resolve, reject) => {
+    if (!transactionHash) {
+      resolve({ confirmed: true });
+    } else {
+      iotaObj.api.isPromotable(transactionHash).then(promotable => {
+        if(!promotable) {
+          console.log(`%cUnpromotable transaction ${transactionHash}`, "background: grey; font-size: x-large");
+          resolve({ promotable: false });
+        } else {
+          iotaObj.api.getLatestInclusion([transactionHash], (error, result) => {
+            if (error) {
+              reject(error);
+            } else {
+              const confirmed = result[0];
+              if (confirmed) {
+                console.log(`%cTransaction confirmed: ${transactionHash}`, "background: yellow; font-size: x-large");
+              }
+              resolve({ promotable: !confirmed });
+            }
+          });
+        }
+      });
+    }
+  });
+
+  const singleSpam = (referenceHash) => new Promise((resolve, reject) => {
     const transaction = new Transaction({ iotaObj, curlObj, sendingSeed, receivingAddress });
-    transaction.sendTransfer().then(resolve);
+    transaction.sendTransfer(referenceHash).then(trx => {
+      const trxHash = trx[0].hash;
+      transactions.push(trx[0]);
+      console.log(`Finished ${transactions.length} transactions.` );
+      resolve(trxHash);
+    });
   });
 
   const start = () => {
+    var referenceHash;
     const spam = () => {
       if (!spamming) return;
-      spamCount++;
-      console.log('Start spam #' + spamCount);
-      singleSpam().then(() => {
-        console.log('Completed spam #' + spamCount);
-        spam();
+      // spamCount++;
+      totalTrx++;
+      // console.log('Start spam #' + spamCount);
+      singleSpam(referenceHash).then((trxHash) => {
+        // console.log('Completed spam #' + spamCount);
+        // console.log('Completed total ' + totalTrx + ' spams #');
+        displayTransactions();
+        referenceHash = referenceHash || trxHash;
+        checkReference(referenceHash).then(({ promotable }) => {
+          if (!promotable) {
+            referenceHash = null;
+          }
+          spam();
+        });
       });
     };
     spamming = true;
