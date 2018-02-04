@@ -92,8 +92,8 @@ function Promoter({iotaObj, curlObj}) {
     transaction.sendTransfer(referenceHash).then(tx => {
       const txHash = tx[0].hash;
       transactions.push(tx[0]);
-      // console.log(`Finished ${transactions.length} transactions.` );
-      // console.log(txHash);
+      console.log(`Finished ${transactions.length} transactions.` );
+      console.log(txHash);
       resolve(txHash);
     });
   });
