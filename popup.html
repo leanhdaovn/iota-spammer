@@ -4,6 +4,8 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.indigo-pink.min.css">
     <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+
+
     <style>
       body {
         width: 800px;
@@ -25,17 +27,26 @@
       <main class="mdl-layout__content">
         <div class="mdl-tabs mdl-js-tabs">
           <div class="mdl-tabs__tab-bar">
-            <a href="#tab1-panel" class="mdl-tabs__tab is-active">Promoter</a>
-            <a href="#tab2-panel" class="mdl-tabs__tab">Spammer</a>
+            <a href="#tab1-panel" class="mdl-tabs__tab">Promoter</a>
+            <a href="#tab2-panel" class="mdl-tabs__tab is-active">Spammer</a>
             <a href="#tab3-panel" class="mdl-tabs__tab">Node Watcher</a>
           </div>
     
-          <div class="mdl-tabs__panel is-active" id="tab1-panel">
+          <div class="mdl-tabs__panel" id="tab1-panel">
             <p>Promoter coming soon</p>
           </div>
     
-          <div class="mdl-tabs__panel" id="tab2-panel">
-            <p>Spammer coming soon</p>
+          <div class="mdl-tabs__panel is-active" id="tab2-panel">
+            <button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored" id="spam-start-btn">
+              Start
+            </button>
+            <button class="mdl-button mdl-js-button mdl-button--raised mdl-button--accent" id="spam-stop-btn">
+              Stop
+            </button>
+            
+            <table>
+              <tbody id="tx-list"></tbody>
+            </table>
           </div>
     
           <div class="mdl-tabs__panel" id="tab3-panel">
@@ -45,4 +56,6 @@
       </main>
     </div>
   </body>
+  <script src="js/popup.js"></script>
+  
 </html>
