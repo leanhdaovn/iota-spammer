@@ -8,7 +8,7 @@ function Transaction({iotaObj, curlObj, sendingSeed, receivingAddress}) {
     if (error) {
       reject(error)
     } else {
-      resolve(address);
+      resolve(result);
     }
   };
 
