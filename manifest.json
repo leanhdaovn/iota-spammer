@@ -15,7 +15,7 @@
   },
   "content_security_policy": "script-src 'self' https://code.getmdl.io; object-src 'self'",
   "background": {
-    "page": "index.html"
+    "page": "background.html"
   },
   "permissions": [
     "storage",
