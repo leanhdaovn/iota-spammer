@@ -37,19 +37,6 @@ function Promoter({iotaObj, curlObj}) {
     iotaObj.api.getNewAddress(seed, generateStandardCallback(resolve, reject));
   });
 
-  const init = () => new Promise((resolve, reject) => {
-    Promise.all([getNewAddress(sendingSeed), getNewAddress(receivingSeed)]).then(addresses => {
-      sengindAddress = addresses[0];
-      receivingAddress = addresses[1];
-      resolve({
-        sendingSeed,
-        receivingSeed,
-        sendingAddress,
-        receivingAddress
-      })
-    })
-  });
-
   const getTransactionToPromote = () => new Promise((resolve, reject) => {
     // var request = new Request('https://api.thetangle.org/v1/transactions/history/5');
     // fetch(request)
@@ -98,48 +85,56 @@ function Promoter({iotaObj, curlObj}) {
     });
   });
 
-  const start = () => {
-    var txHashToPromote;
-    const promote = () => {
-      if (!promoting) return;
-
-      const makeSinglePromote = () => {
-        singlePromote(txHashToPromote).then(txHash => {
-          // txHashToPromote = txHashToPromote || txHash;
-          // displayTransactions();
-          checkReference(txHashToPromote)
-            .then(({ promotable }) => {
-              if (!promotable) {
-                txHashToPromote = null;
-              }
-            })
-            .then(() => {
-              console.log(`Resting for ${DELAY_PERIOD} seconds`);
-              setTimeout(promote, DELAY_PERIOD * 1000);
-            });
-        });
-      };
-
-      if (!txHashToPromote) {
-        getTransactionToPromote()
-          .then(hash => { txHashToPromote = hash; })
-          .then(makeSinglePromote);
-      } else {
-        makeSinglePromote();
-      }
-      
-    };
-    promoting = true;
-    promote();
-  };
-
-  const stop = () => { promoting = false; };
-
   return {
-    init,
-    singlePromote,
-    start,
-    stop,
+    init: () => new Promise((resolve, reject) => {
+      Promise.all([getNewAddress(sendingSeed), getNewAddress(receivingSeed)]).then(addresses => {
+        sengindAddress = addresses[0];
+        receivingAddress = addresses[1];
+        resolve({
+          sendingSeed,
+          receivingSeed,
+          sendingAddress,
+          receivingAddress
+        })
+      })
+    }),
+
+    start: () => {
+      var txHashToPromote;
+      const promote = () => {
+        if (!promoting) return;
+
+        const makeSinglePromote = () => {
+          singlePromote(txHashToPromote).then(txHash => {
+            txHashToPromote = txHashToPromote || txHash;
+            checkReference(txHashToPromote)
+              .then(({ promotable }) => {
+                if (!promotable) {
+                  txHashToPromote = null;
+                }
+              })
+              .then(() => {
+                console.log(`Resting for ${DELAY_PERIOD} seconds`);
+                setTimeout(promote, DELAY_PERIOD * 1000);
+              });
+          });
+        };
+
+        if (!txHashToPromote) {
+          getTransactionToPromote()
+            .then(hash => { txHashToPromote = hash; })
+            .then(makeSinglePromote);
+        } else {
+          makeSinglePromote();
+        }
+
+      };
+      promoting = true;
+      promote();
+    },
+
+    stop: () => { promoting = false; },
+
     setFrequency: (frequency) => {}
   }
 };
