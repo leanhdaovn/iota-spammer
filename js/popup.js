@@ -4,11 +4,14 @@ const port = chrome.extension.connect({
 
 const spamStartBtn = document.getElementById('spam-start-btn');
 spamStartBtn.onclick = e => {
-  port.postMessage({ command: 'startSpam'});
+  port.postMessage({ type: 'START_SPAM'});
 };
 
 const spamStopBtn = document.getElementById('spam-stop-btn');
 spamStopBtn.onclick = e => {
-  port.postMessage({ command: 'stopSpam'});
+  port.postMessage({ type: 'STOP_SPAM'});
 };
 
+port.onMessage.addListener(msg => {
+  console.log("message received", msg);
+});

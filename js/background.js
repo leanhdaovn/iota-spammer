@@ -30,21 +30,31 @@ const createSendTxHash = port => {
   };
 };
 
-promoter.init().then(() => {
+const startSpam = (promoter, port) => {
+  console.log("Start spamming");
+  promoter.onTransactionCreated = createSendTxHash(port);
+  promoter.start();
+};
+
+const stopSpam = promoter => {
+  console.log("Stop spamming");
+  promoter.stop();
+}
+
+chrome.extension.onConnect.addListener(port => {
+  console.log("Connected .....");
+
   chrome.extension.onConnect.addListener(port => {
     console.log("Connected .....");
     port.onMessage.addListener(function (msg) {
-      console.log("message recieved", msg);
-      if (msg['command']) {
-        switch (msg.command) {
-          case 'startSpam':
-            console.log("Start spamming");
-            promoter.onTransactionCreated = createSendTxHash(port);
-            promoter.start();
+      console.log("message received", msg);
+      if (msg['type']) {
+        switch (msg.type) {
+          case 'START_SPAM':
+            startSpam(promoter, port);
             break;
-          case 'stopSpam':
-            console.log("Stop spamming");
-            promoter.stop();
+          case 'STOP_SPAM':
+            stopSpam(promoter);
             break;
         }
       }
