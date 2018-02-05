@@ -18,6 +18,7 @@ function Promoter({ iotaObj, curlObj }) {
   this.inputs = null;
   this.trytes = null;
   this.promoting = false;
+  this.initialized = false;
   this.promotionCount = 0;
 
   this.getNewAddress = (seed) => new Promise((resolve, reject) => {
@@ -82,21 +83,11 @@ function Promoter({ iotaObj, curlObj }) {
       resolve(txHash);
     });
   });
-};
 
-Promoter.prototype.init = function() {
-  const self = this;
-  return new Promise((resolve, reject) => {
-    Promise.all([self.getNewAddress(self.sendingSeed), self.getNewAddress(self.receivingSeed)]).then(addresses => {
-      self.sengindAddress = addresses[0];
-      self.receivingAddress = addresses[1];
-      resolve({
-        sendingSeed: self.sendingSeed,
-        receivingSeed: self.receivingSeed,
-        sendingAddress: self.sendingAddress,
-        receivingAddress: self.receivingAddress
-      })
-    })
+  Promise.all([this.getNewAddress(this.sendingSeed), this.getNewAddress(this.receivingSeed)]).then(addresses => {
+    this.sengindAddress = addresses[0];
+    this.receivingAddress = addresses[1];
+    this.initialized = true;
   })
 };
 
