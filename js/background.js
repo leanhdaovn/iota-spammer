@@ -21,8 +21,17 @@ const iotaObj = new IOTA({ 'provider': providers[0] });
 curl.overrideAttachToTangle(iotaObj);
 const promoter = new Promoter({ iotaObj: iotaObj, curlObj: curl });
 
+const createSendTxHash = port => {
+  return txHash => {
+    port.postMessage({ 
+      type: 'TRANSACTION_CREATED', 
+      payload: { hash: txHash } 
+    });
+  };
+};
+
 promoter.init().then(() => {
-  chrome.extension.onConnect.addListener(function (port) {
+  chrome.extension.onConnect.addListener(port => {
     console.log("Connected .....");
     port.onMessage.addListener(function (msg) {
       console.log("message recieved", msg);
@@ -30,6 +39,7 @@ promoter.init().then(() => {
         switch (msg.command) {
           case 'startSpam':
             console.log("Start spamming");
+            promoter.onTransactionCreated = createSendTxHash(port);
             promoter.start();
             break;
           case 'stopSpam':
