@@ -14,6 +14,13 @@ spamStopBtn.onclick = e => {
   port.postMessage({ type: 'STOP_SPAM'});
 };
 
+const spamClearBtn = document.getElementById('spam-clear-btn');
+spamClearBtn.onclick = e => {
+  chrome.storage.local.remove('spamTransactions', function (result) {
+    showTransactions();
+  })
+};
+
 const displayTransactions = (transactions) => {
   var txListEle = document.getElementById('tx-list');
   var txListRows = transactions.map(tx => {
