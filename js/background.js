@@ -30,14 +30,10 @@ const storeTx = txHash => new Promise((resolve, reject) => {
   });
 });
 
-const createSendTxHash = port => {
-  var connected = true;
-
-  port.onDisconnect = () => { connected = false; };
-
+const createSendTxHash = (port, portState) => {
   return txHash => {
     storeTx(txHash).then(() => {
-      if (!connected) return;
+      if (!portState.connected) return;
       port.postMessage({ type: 'TRANSACTION_CREATED' });
     })
   };
@@ -45,7 +41,14 @@ const createSendTxHash = port => {
 
 const startSpam = (promoter, port) => {
   console.log("Start spamming");
-  promoter.onTransactionCreated = createSendTxHash(port);
+  const portState = { connected: true };
+
+  port.onDisconnect.addListener((e) => {
+    console.log("disconnected...");
+    portState.connected = false;
+  });
+
+  promoter.onTransactionCreated = createSendTxHash(port, portState);
   promoter.start();
 };
 
