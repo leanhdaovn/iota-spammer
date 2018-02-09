@@ -1,7 +1,7 @@
 function Transaction({iotaObj, curlObj, sendingSeed, receivingAddress}) {
   const DEPTH = 3;
   const MIN_WEIGHT_MAGNITUDE = 14;
-  const TAG = '9999ANDYLPROMOTERTX';
+  const TAG = '9999999999999IOTA9UTILITIES';
   const transfers = [{ address: receivingAddress, value: 0, tag: TAG }];
 
   const generateStandardCallback = (resolve, reject) => (error, result) => {

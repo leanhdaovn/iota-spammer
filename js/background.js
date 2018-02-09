@@ -21,12 +21,25 @@ const iotaObj = new IOTA({ 'provider': providers[0] });
 curl.overrideAttachToTangle(iotaObj);
 const promoter = new Promoter({ iotaObj: iotaObj, curlObj: curl });
 
+const storeTx = txHash => new Promise((resolve, reject) => {
+  const now = Date.now();
+  chrome.storage.local.get({spamTransactions: []}, function (result) {
+    const transactions = result.spamTransactions;
+    transactions.push({ hash: txHash, timestamp: now });
+    chrome.storage.local.set({ spamTransactions: transactions }, resolve);
+  });
+});
+
 const createSendTxHash = port => {
+  var connected = true;
+
+  port.onDisconnect = () => { connected = false; };
+
   return txHash => {
-    port.postMessage({ 
-      type: 'TRANSACTION_CREATED', 
-      payload: { hash: txHash } 
-    });
+    storeTx(txHash).then(() => {
+      if (!connected) return;
+      port.postMessage({ type: 'TRANSACTION_CREATED' });
+    })
   };
 };
 
@@ -43,21 +56,17 @@ const stopSpam = promoter => {
 
 chrome.extension.onConnect.addListener(port => {
   console.log("Connected .....");
-
-  chrome.extension.onConnect.addListener(port => {
-    console.log("Connected .....");
-    port.onMessage.addListener(function (msg) {
-      console.log("message received", msg);
-      if (msg['type']) {
-        switch (msg.type) {
-          case 'START_SPAM':
-            startSpam(promoter, port);
-            break;
-          case 'STOP_SPAM':
-            stopSpam(promoter);
-            break;
-        }
+  port.onMessage.addListener(function (msg) {
+    console.log("message received", msg);
+    if (msg['type']) {
+      switch (msg.type) {
+        case 'START_SPAM':
+          startSpam(promoter, port);
+          break;
+        case 'STOP_SPAM':
+          stopSpam(promoter);
+          break;
       }
-    });
+    }
   });
 });
