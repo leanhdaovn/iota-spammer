@@ -22,14 +22,16 @@ spamClearBtn.onclick = e => {
 };
 
 const displayTransactions = (transactions) => {
-  var txListEle = document.getElementById('tx-list');
-  var txListRows = transactions.map(tx => {
+  const sortedTxs = transactions.sort((tx1, tx2) => (tx2.timestamp - tx1.timestamp));
+
+  const txListEle = document.getElementById('tx-list');
+  const txListRows = sortedTxs.map(tx => {
     const time = new Date(tx.timestamp);
     return `
-    <li>
-      <span>${time.toLocaleString()} </span>
-      <a href="https://thetangle.org/transaction/${tx.hash}">${tx.hash.substr(0, 6)}</a>
-    </li>
+    <tr>
+      <td class="mdl-data-table__cell--non-numeric">${time.toLocaleString()}</td>
+      <td class="mdl-data-table__cell--non-numeric"><a href="https://thetangle.org/transaction/${tx.hash}">${tx.hash.substr(0, 20)}...</a></td>
+    </tr>
     `;
   });
   txListEle.innerHTML = txListRows.join('');

@@ -27,16 +27,11 @@
       <main class="mdl-layout__content">
         <div class="mdl-tabs mdl-js-tabs">
           <div class="mdl-tabs__tab-bar">
-            <a href="#tab1-panel" class="mdl-tabs__tab">Promoter</a>
-            <a href="#tab2-panel" class="mdl-tabs__tab is-active">Spammer</a>
-            <a href="#tab3-panel" class="mdl-tabs__tab">Node Watcher</a>
+            <a href="#tab1-panel" class="mdl-tabs__tab is-active">Spammer</a>
+            <a href="#tab2-panel" class="mdl-tabs__tab">Promoter</a>
           </div>
     
-          <div class="mdl-tabs__panel" id="tab1-panel">
-            <p>Promoter coming soon</p>
-          </div>
-    
-          <div class="mdl-tabs__panel is-active" id="tab2-panel">
+          <div class="mdl-tabs__panel is-active" id="tab1-panel">
             <button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored" id="spam-start-btn">
               Start
             </button>
@@ -47,13 +42,20 @@
               Clear
             </button>
             
-            <table>
-              <tbody id="tx-list"></tbody>
+            <table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
+              <thead>
+                <tr>
+                  <th class="mdl-data-table__cell--non-numeric">Time</th>
+                  <th class="mdl-data-table__cell--non-numeric">Transaction Hash</th>
+                </tr>
+              </thead>
+              <tbody id="tx-list">
+              </tbody>
             </table>
           </div>
-    
-          <div class="mdl-tabs__panel" id="tab3-panel">
-            <p>Node watcher coming soon</p>
+
+          <div class="mdl-tabs__panel" id="tab2-panel">
+            <p>Promoter coming soon</p>
           </div>
         </div>
       </main>
