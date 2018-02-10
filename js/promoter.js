@@ -81,7 +81,7 @@ function Promoter({ iotaObj, curlObj }) {
       console.log(`Finished ${transactions.length} transactions.` );
       console.log(txHash);
       resolve(txHash);
-    });
+    }).catch(reject);
   });
 
   Promise.all([this.getNewAddress(this.sendingSeed), this.getNewAddress(this.receivingSeed)]).then(addresses => {
@@ -99,18 +99,23 @@ Promoter.prototype.start = function() {
 
     const makeSinglePromote = () => {
       self.singlePromote(txHashToPromote).then(txHash => {
-        txHashToPromote = txHashToPromote || txHash;
+        // txHashToPromote = txHashToPromote || txHash;
         self.checkReference(txHashToPromote)
           .then(({ promotable }) => {
             if (!promotable) {
               txHashToPromote = null;
             }
           })
+          .then(() => { self.onTransactionCreated(txHash); })
           .then(() => {
-            self.onTransactionCreated(txHash);
             console.log(`Resting for ${DELAY_PERIOD} seconds`);
             setTimeout(promote, DELAY_PERIOD * 1000);
-          });
+          });;
+      }).catch((error) => {
+        self.onTransactionFailure().then(() => {
+          console.log(`Resting for ${DELAY_PERIOD} seconds`);
+          setTimeout(promote, DELAY_PERIOD * 1000);
+        });
       });
     };
 
@@ -132,3 +137,4 @@ Promoter.prototype.stop = function() { this.promoting = false; };
 Promoter.prototype.setFrequency = function(frequency) { };
 
 Promoter.prototype.onTransactionCreated = function(txHash) { };
+Promoter.prototype.onTransactionFailure = function() { };
