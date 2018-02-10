@@ -1,24 +1,5 @@
 const KEEP_TX_QUANTITY = 10;
 
-const providers = [
-  'http://178.238.237.200:14265',
-  'http://iotanode.party:14265',
-  'http://iota.pathin.net:14265',
-  'http://heimelaga.vodka:14265',
-  'https://nodes.thetangle.org:443',
-  'http://iotamn-sea3.bourg.net:14267',
-  'https://node.iotanode.host:443',
-  'http://iota.moz.cloud:14265',
-  'http://apache.hopto.me:14265',
-  'https://tuna.iotasalad.org:14265',
-  'http://45.77.232.81:14265',
-  'http://188.166.225.112:14265',
-  'http://213.136.88.82:14265',
-  'https://node.iotanode.host:443',
-  'http://node.davidsiota.com:14265',
-  'http://node.lukaseder.de:14265'
-];
-
 const blackListedProviders = [];
 
 const getRandomItem = (array) => {
@@ -108,7 +89,7 @@ const startSpam = (promoter, port) => {
       promoter.onTransactionFailure = () => new Promise((resolve, reject) => {
         switchProvider().then(resolve);
       });
-      
+
       promoter.start();
     }
   });
