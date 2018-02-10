@@ -1,3 +1,5 @@
+const KEEP_TX_QUANTITY = 10;
+
 const providers = [
   'http://178.238.237.200:14265',
   // 'http://iotanode.party:14265',
@@ -25,6 +27,8 @@ const storeTx = txHash => new Promise((resolve, reject) => {
   const now = Date.now();
   chrome.storage.local.get({spamTransactions: []}, function (result) {
     const transactions = result.spamTransactions;
+    while (transactions.length > (KEEP_TX_QUANTITY - 1)) { transactions.shift(); }
+
     transactions.push({ hash: txHash, timestamp: now });
     chrome.storage.local.set({ spamTransactions: transactions }, resolve);
   });
@@ -40,16 +44,21 @@ const createSendTxHash = (port, portState) => {
 };
 
 const startSpam = (promoter, port) => {
-  console.log("Start spamming");
-  const portState = { connected: true };
+  chrome.storage.local.get({ spamming: false }, function (spamming) {
+    if (!spamming) {
+      chrome.storage.local.set({ spamming: true })
+      console.log("Start spamming");
+      const portState = { connected: true };
 
-  port.onDisconnect.addListener((e) => {
-    console.log("disconnected...");
-    portState.connected = false;
+      port.onDisconnect.addListener((e) => {
+        console.log("disconnected...");
+        portState.connected = false;
+      });
+
+      promoter.onTransactionCreated = createSendTxHash(port, portState);
+      promoter.start();
+    }
   });
-
-  promoter.onTransactionCreated = createSendTxHash(port, portState);
-  promoter.start();
 };
 
 const stopSpam = promoter => {
