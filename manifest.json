@@ -4,14 +4,14 @@
   "description": "Utilities for IOTA users",
   "version": "0.0.1",
   "browser_action": {
-    "default_icon": "iota-logo-1.png",
+    "default_icon": "images/iota-logo-1.png",
     "default_popup": "html/popup.html",
     "default_title": "IOTA Utilities"
   },
   "icons": {
-    "16": "iota-logo-1.png",
-    "32": "iota-logo-1.png",
-    "128": "iota-logo-1.png"
+    "16": "images/iota-logo-1.png",
+    "32": "images/iota-logo-1.png",
+    "128": "images/iota-logo-1.png"
   },
   "content_security_policy": "script-src 'self' https://code.getmdl.io; object-src 'self'",
   "background": {
