@@ -2,18 +2,9 @@
   <head>
     <title>IOTA Utilities</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-    <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.blue_grey-blue.min.css">
+    <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.indigo-pink.min.css" />
+    <link rel="stylesheet" type="text/css" href="/css/popup.css">
     <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
-
-
-    <style>
-      body {
-        width: 800px;
-        height: 600px;
-        position: relative;
-        vertical-align:middle;
-      }
-    </style>
   </head>
 
   <body>
@@ -22,16 +13,31 @@
         <div class="mdl-layout__header-row">
           <span class="mdl-layout-title">IOTA Utilities</span>
         </div>
+        <div class="mdl-layout__tab-bar mdl-js-ripple-effect">
+          <a href="#scroll-tab-1" class="mdl-layout__tab is-active">Promoter</a>
+          <a href="#scroll-tab-2" class="mdl-layout__tab">Spammer</a>
+        </div>
       </header>
     
       <main class="mdl-layout__content">
-        <div class="mdl-tabs mdl-js-tabs">
-          <div class="mdl-tabs__tab-bar">
-            <a href="#tab1-panel" class="mdl-tabs__tab is-active">Spammer</a>
-            <a href="#tab2-panel" class="mdl-tabs__tab">Promoter</a>
+        <section class="mdl-layout__tab-panel is-active" id="scroll-tab-1">
+          <div class="page-content mdl-grid">
+            <div class="mdl-cell mdl-cell--8-col">
+              <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label hash-textfield">
+                <input class="mdl-textfield__input hash-input" type="text" id="tx-hash-input">
+                <label class="mdl-textfield__label" for="sample1">Transaction Hash...</label>
+              </div>
+            </div>
+            <div class="mdl-cell mdl-cell--2-col mdl-cell--3-offset mdl-typography--text-center">
+              <button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored" id="spam-start-btn">
+                Promote
+              </button>
+            </div>
           </div>
+        </section>
     
-          <div class="mdl-tabs__panel is-active" id="tab1-panel">
+        <section class="mdl-layout__tab-panel" id="scroll-tab-2">
+          <div class="page-content mdl-grid">
             <button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored" id="spam-start-btn">
               Start
             </button>
@@ -53,14 +59,9 @@
               </tbody>
             </table>
           </div>
-
-          <div class="mdl-tabs__panel" id="tab2-panel">
-            <p>Promoter coming soon</p>
-          </div>
-        </div>
+        </section>
       </main>
     </div>
   </body>
   <script src="/js/popup.js"></script>
-  
 </html>

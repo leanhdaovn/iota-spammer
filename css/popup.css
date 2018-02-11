@@ -1,0 +1,18 @@
+body {
+  width: 800px;
+  height: 600px;
+  position: relative;
+  vertical-align:middle;
+}
+
+.hash-textfield {
+  width: 100%;
+}
+
+.mdl-layout__tab:focus {
+  outline: none;
+}
+
+.hash-input {
+  font-size: 0.8em;
+}
