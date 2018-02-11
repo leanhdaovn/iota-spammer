@@ -1,4 +1,4 @@
-const KEEP_TX_QUANTITY = 10;
+const KEEP_TX_QUANTITY = 5;
 
 const blackListedProviders = [];
 

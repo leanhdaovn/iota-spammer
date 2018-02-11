@@ -1,12 +1,12 @@
 {
   "manifest_version": 2,
-  "name": "IOTA Utilities chrome extension",
-  "description": "This extension allows the user to spam the IOTA network and promote their transactions.",
+  "name": "IOTA Utilities",
+  "description": "Utilities for IOTA users",
   "version": "0.0.1",
   "browser_action": {
     "default_icon": "iota-logo-1.png",
     "default_popup": "html/popup.html",
-    "default_title": "Click here!"
+    "default_title": "IOTA Utilities"
   },
   "icons": {
     "16": "iota-logo-1.png",

@@ -21,6 +21,23 @@ spamClearBtn.onclick = e => {
   })
 };
 
+const displaySpammingStatus = () => {
+  const spammingStatusElement = document.getElementById('spamming-status');
+  chrome.storage.local.get({ spamming: false }, ({ spamming }) => {
+    spammingStatusElement.innerHTML = spamming ? 'spamming' : 'not spamming';
+    if (spamming) {
+      spamStartBtn.disabled = true;
+      spamStopBtn.disabled = false;
+    } else {
+      spamStartBtn.disabled = false;
+      spamStopBtn.disabled = true;
+    }
+  });
+};
+
+displaySpammingStatus();
+setInterval(displaySpammingStatus, 100);
+
 const displayTransactions = (transactions) => {
   const sortedTxs = transactions.sort((tx1, tx2) => (tx2.timestamp - tx1.timestamp));
 
@@ -30,7 +47,7 @@ const displayTransactions = (transactions) => {
     return `
     <tr>
       <td class="mdl-data-table__cell--non-numeric">${time.toLocaleString()}</td>
-      <td class="mdl-data-table__cell--non-numeric"><a href="https://thetangle.org/transaction/${tx.hash}">${tx.hash.substr(0, 20)}...</a></td>
+      <td class="mdl-data-table__cell--non-numeric"><a href="https://thetangle.org/transaction/${tx.hash}">${tx.hash.substr(0, 40)}...</a></td>
     </tr>
     `;
   });
