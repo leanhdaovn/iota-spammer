@@ -21,6 +21,17 @@ spamClearBtn.onclick = e => {
   })
 };
 
+const promoteBtn = document.getElementById('promote-start-btn');
+promoteBtn.onclick = e => {
+  const txHash = document.getElementById('tx-hash-input').value;
+  port.postMessage({ 
+    type: 'START_PROMOTING', 
+    payload: {
+      transactionHash: txHash
+    }
+  });
+};
+
 const displaySpammingStatus = () => {
   const spammingStatusElement = document.getElementById('spamming-status');
   chrome.storage.local.get({ spamming: false }, ({ spamming }) => {
