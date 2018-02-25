@@ -112,6 +112,7 @@ Promoter.prototype.start = function() {
             setTimeout(promote, DELAY_PERIOD * 1000);
           });;
       }).catch((error) => {
+        console.error(error);
         self.onTransactionFailure().then(() => {
           console.log(`Resting for ${DELAY_PERIOD} seconds`);
           setTimeout(promote, DELAY_PERIOD * 1000);

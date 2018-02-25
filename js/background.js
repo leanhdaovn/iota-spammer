@@ -1,5 +1,6 @@
 const KEEP_TX_QUANTITY = 5;
 
+const providers = ['https://field.carriota.com:443'];
 const blackListedProviders = [];
 
 const getRandomItem = (array) => {

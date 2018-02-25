@@ -19,8 +19,7 @@
   },
   "permissions": [
     "storage",
-    "https://*/",
-    "http://*/"
+    "https://field.carriota.com:443/"
   ],
   "requirements": {
     "3D": {
