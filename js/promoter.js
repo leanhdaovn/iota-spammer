@@ -12,9 +12,7 @@ function Promoter({ iotaObj, curlObj }) {
   }
 
   this.sendingSeed = generateSeed();
-  this.receivingSeed = generateSeed();
   this.sendingAddress = null;
-  this.receivingAddress = null;
   this.inputs = null;
   this.trytes = null;
   this.promoting = false;
@@ -72,8 +70,7 @@ function Promoter({ iotaObj, curlObj }) {
     const transaction = new Transaction({ 
       iotaObj, 
       curlObj, 
-      sendingSeed: this.sendingSeed, 
-      receivingAddress: this.receivingAddress 
+      sendingSeed: this.sendingSeed
     });
     transaction.sendTransfer(referenceHash).then(tx => {
       const txHash = tx[0].hash;
@@ -84,9 +81,8 @@ function Promoter({ iotaObj, curlObj }) {
     }).catch(reject);
   });
 
-  Promise.all([this.getNewAddress(this.sendingSeed), this.getNewAddress(this.receivingSeed)]).then(addresses => {
+  Promise.all([this.getNewAddress(this.sendingSeed)]).then(addresses => {
     this.sengindAddress = addresses[0];
-    this.receivingAddress = addresses[1];
     this.initialized = true;
   })
 };
