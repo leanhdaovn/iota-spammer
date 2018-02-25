@@ -48,7 +48,7 @@ function Promoter({ iotaObj, curlObj }) {
       iotaObj.api.isPromotable(transactionHash).then(promotable => {
         if(!promotable) {
           console.log(`%cUnpromotable transaction ${transactionHash}`, "background: grey; font-size: x-large");
-          resolve({ promotable: false });
+          resolve({ promotable: false, confirmed: false });
         } else {
           iotaObj.api.getLatestInclusion([transactionHash], (error, result) => {
             if (error) {
@@ -58,7 +58,7 @@ function Promoter({ iotaObj, curlObj }) {
               if (confirmed) {
                 console.log(`%cTransaction confirmed: ${transactionHash}`, "background: yellow; font-size: x-large");
               }
-              resolve({ promotable: !confirmed });
+              resolve({ promotable: !confirmed, confirmed: confirmed });
             }
           });
         }
@@ -87,9 +87,9 @@ function Promoter({ iotaObj, curlObj }) {
   })
 };
 
-Promoter.prototype.start = function() {
+Promoter.prototype.start = function(txHash = null) {
   const self = this;
-  var txHashToPromote;
+  let txHashToPromote = txHash;
   const promote = () => {
     if (!self.promoting) return;
 
@@ -97,22 +97,35 @@ Promoter.prototype.start = function() {
       self.singlePromote(txHashToPromote).then(txHash => {
         // txHashToPromote = txHashToPromote || txHash;
         self.checkReference(txHashToPromote)
-          .then(({ promotable }) => {
+          .then(({ promotable, confirmed }) => {
             if (!promotable) {
               txHashToPromote = null;
             }
+            return confirmed;
           })
-          .then(() => { self.onTransactionCreated(txHash); })
+          .then((confirmed) => { 
+            self.onTransactionCreated(txHash);
+            if(confirmed) {
+              self.onTransactionConfirmed();
+              return Promise.reject('Transaction is confirmed!');
+            }
+          })
           .then(() => {
             console.log(`Resting for ${DELAY_PERIOD} seconds`);
             setTimeout(promote, DELAY_PERIOD * 1000);
+          }).catch((error) => {
+            console.log(error);
+            self.onTransactionFailure();
+            self.stop();
           });;
       }).catch((error) => {
-        console.error(error);
-        self.onTransactionFailure().then(() => {
-          console.log(`Resting for ${DELAY_PERIOD} seconds`);
-          setTimeout(promote, DELAY_PERIOD * 1000);
-        });
+        console.log(error);
+        self.onTransactionFailure();
+        self.stop();
+        // self.onTransactionFailure().then(() => {
+        //   console.log(`Resting for ${DELAY_PERIOD} seconds`);
+        //   setTimeout(promote, DELAY_PERIOD * 1000);
+        // });
       });
     };
 
@@ -135,3 +148,4 @@ Promoter.prototype.setFrequency = function(frequency) { };
 
 Promoter.prototype.onTransactionCreated = function(txHash) { };
 Promoter.prototype.onTransactionFailure = function() { };
+Promoter.prototype.onTransactionConfirmed = function() { };
