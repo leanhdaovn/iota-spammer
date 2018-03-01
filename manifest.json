@@ -19,7 +19,7 @@
   },
   "permissions": [
     "storage",
-    "https://field.carriota.com:443/"
+    "http://iota-nodes.tilthat.com/"
   ],
   "requirements": {
     "3D": {
