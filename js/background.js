@@ -47,14 +47,14 @@ const storeTx = txHash => new Promise((resolve, reject) => {
   });
 });
 
-const createSendTxHash = (port, portState) => {
-  return txHash => {
-    storeTx(txHash).then(() => {
-      if (!portState.connected) return;
-      port.postMessage({ type: 'TRANSACTION_CREATED' });
-    })
-  };
-};
+// const createSendTxHash = (port, portState) => {
+//   return txHash => {
+//     storeTx(txHash).then(() => {
+//       if (!portState.connected) return;
+//       port.postMessage({ type: 'TRANSACTION_CREATED' });
+//     })
+//   };
+// };
 
 const startSpam = (promoter, port) => {
   chrome.storage.local.get({ spamming: false }, function ({spamming}) {
@@ -63,12 +63,12 @@ const startSpam = (promoter, port) => {
       console.log("Start spamming");
       const portState = { connected: true };
 
-      port.onDisconnect.addListener((e) => {
-        console.log("disconnected...");
-        portState.connected = false;
-      });
-
-      while (!promoter) {}
+      if (port) {
+        port.onDisconnect.addListener((e) => {
+          console.log("disconnected...");
+          portState.connected = false;
+        });
+      }
 
       const switchProvider = () => new Promise((resolve, reject) => {
         getRandomProvider().then(newProvider => {
@@ -81,7 +81,7 @@ const startSpam = (promoter, port) => {
       });
 
       promoter.onTransactionCreated = txHash => new Promise((resolve, reject) => {
-        createSendTxHash(port, portState)(txHash);
+        storeTx(txHash);
         switchProvider().then(resolve);
       });
 
@@ -100,7 +100,7 @@ const stopSpam = promoter => {
   chrome.storage.local.set({ spamming: false });
 };
 
-const startPromoting = (promoter, port, txHash) => {
+const startPromoting = (promoter, txHash) => {
   getPromoteState(promoteState => {
     if (true /*!promoting*/) {
       updatePromoteState(promoteState => {
@@ -110,15 +110,6 @@ const startPromoting = (promoter, port, txHash) => {
         promoteState.errorMessage = null;
       });
       console.log("Start promoting");
-      const portState = { connected: true };
-
-      port.onDisconnect.addListener((e) => {
-        console.log("disconnected...");
-        portState.connected = false;
-      });
-
-      // wait for promoter to be initialized
-      while (!promoter) { }
 
       const switchProvider = () => new Promise((resolve, reject) => {
         getRandomProvider().then(newProvider => {
@@ -131,7 +122,6 @@ const startPromoting = (promoter, port, txHash) => {
       });
 
       promoter.onTransactionCreated = txHash => new Promise((resolve, reject) => {
-        createSendTxHash(port, portState)(txHash);
         updatePromoteState(promoteState => {
           promoteState.transactions.push(txHash);
         });
@@ -166,7 +156,7 @@ const stopPromoting = promoter => {
 };
 
 chrome.extension.onConnect.addListener(port => {
-  console.log("Connected .....");
+  console.log("port connected .....");
   port.onMessage.addListener(function (msg) {
     console.log("message received", msg);
     if (msg['type']) {
@@ -178,7 +168,7 @@ chrome.extension.onConnect.addListener(port => {
           stopSpam(promoter);
           break;
         case 'START_PROMOTING':
-          startPromoting(promoter, port, msg.payload.transactionHash);
+          startPromoting(promoter, msg.payload.transactionHash);
           break;
         case 'STOP_PROMOTING':
           stopPromoting(promoter);
@@ -186,4 +176,27 @@ chrome.extension.onConnect.addListener(port => {
       }
     }
   });
+
+  port.onDisconnect.addListener((e) => {
+    console.log("port disconnected...");
+  });
+
 });
+
+const startUp = () => {
+  getPromoteState(promoteState => {
+    if (promoteState.working) {
+      const interval = setInterval(() => {
+        // wait for promoter to be initialized
+        if (!promoter) {
+          return;
+        } else {
+          clearInterval(interval);
+          startPromoting(promoter, promoteState.originalTransaction);
+        }
+      }, 10);
+    }
+  });
+};
+
+startUp();
