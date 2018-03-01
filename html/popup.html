@@ -23,7 +23,7 @@
 
         <!-- Promoter -->
         <section class="mdl-layout__tab-panel is-active" id="scroll-tab-1">
-          <div class="page-content mdl-grid">
+          <div class="page-content mdl-grid mdl-typography--text-center">
             <div class="mdl-cell mdl-cell--8-col">
               <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label hash-textfield">
                 <input class="mdl-textfield__input hash-input" type="text" id="tx-hash-input">
@@ -31,11 +31,25 @@
               </div>
               <!-- <span>Comming soon...</span> -->
             </div>
-            <div class="mdl-cell mdl-cell--2-col mdl-cell--3-offset mdl-typography--text-center">
-              <button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored" id="promote-start-btn">
+            <div class="mdl-cell mdl-cell--2-col mdl-cell--1-offset">
+              <button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored" id="promote-start-btn" disabled>
                 Promote
               </button>
             </div>
+            <div class="mdl-cell mdl-cell--2-col mdl-cell--1-offset">
+              <button class="mdl-button mdl-js-button mdl-button--raised mdl-button--accent" id="promote-stop-btn" disabled>
+                Stop
+              </button>
+            </div>
+          </div>
+          <div class="mdl-cell mdl-cell--6-col">
+            <span id="promote-status"></span>
+          </div>
+          <div class="mdl-cell mdl-cell--6-col">
+            <span id="promote-txn-count"></span>
+          </div>
+          <div class="mdl-cell mdl-cell--6-col">
+            <span id="promote-error"></span>
           </div>
         </section>
     
@@ -80,5 +94,6 @@
       </main>
     </div>
   </body>
+  <script src="/js/state-manager.js"></script>
   <script src="/js/popup.js"></script>
 </html>

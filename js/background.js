@@ -106,6 +106,7 @@ const startPromoting = (promoter, port, txHash) => {
       updatePromoteState(promoteState => {
         promoteState.working = true;
         promoteState.originalTransaction = txHash;
+        promoteState.transactions = [];
         promoteState.errorMessage = null;
       });
       console.log("Start promoting");
