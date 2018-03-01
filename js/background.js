@@ -101,9 +101,13 @@ const stopSpam = promoter => {
 };
 
 const startPromoting = (promoter, port, txHash) => {
-  chrome.storage.local.get({ promoting: false }, function ({ promoting }) {
+  getPromoteState(promoteState => {
     if (true /*!promoting*/) {
-      chrome.storage.local.set({ promoting: true })
+      updatePromoteState(promoteState => {
+        promoteState.working = true;
+        promoteState.originalTransaction = txHash;
+        promoteState.errorMessage = null;
+      });
       console.log("Start promoting");
       const portState = { connected: true };
 
@@ -127,12 +131,19 @@ const startPromoting = (promoter, port, txHash) => {
 
       promoter.onTransactionCreated = txHash => new Promise((resolve, reject) => {
         createSendTxHash(port, portState)(txHash);
-        switchProvider().then(resolve);
+        updatePromoteState(promoteState => {
+          promoteState.transactions.push(txHash);
+        });
+        resolve();
+        // switchProvider().then(resolve);
       });
 
-      promoter.onTransactionFailure = () => new Promise((resolve, reject) => {
+      promoter.onTransactionFailure = error => new Promise((resolve, reject) => {
         // switchProvider().then(resolve);
         stopPromoting(promoter);
+        updatePromoteState(promoteState => {
+          promoteState.errorMessage = 'Some error occurred. Please try again.';
+        });
         resolve();
       });
 
@@ -148,7 +159,9 @@ const startPromoting = (promoter, port, txHash) => {
 const stopPromoting = promoter => {
   console.log("Stop promoting");
   promoter.stop();
-  chrome.storage.local.set({ promoting: false });
+  updatePromoteState(promoteState => {
+    promoteState.working = false;
+  });
 };
 
 chrome.extension.onConnect.addListener(port => {

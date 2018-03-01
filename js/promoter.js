@@ -115,7 +115,7 @@ Promoter.prototype.start = function(txHash = null) {
             setTimeout(promote, DELAY_PERIOD * 1000);
           }).catch((error) => {
             console.log(error);
-            self.onTransactionFailure();
+            self.onTransactionFailure(error);
             self.stop();
           });;
       }).catch((error) => {
