@@ -19,7 +19,8 @@
   },
   "permissions": [
     "storage",
-    "http://iota-nodes.tilthat.com/"
+    "http://iota-nodes.tilthat.com/",
+    "https://iota-nodes.tilthat.com/"
   ],
   "requirements": {
     "3D": {

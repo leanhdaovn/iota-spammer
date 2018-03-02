@@ -14,22 +14,23 @@
           <span class="mdl-layout-title">IOTA Utilities</span>
         </div>
         <div class="mdl-layout__tab-bar mdl-js-ripple-effect">
-          <a href="#scroll-tab-1" class="mdl-layout__tab is-active">Promoter</a>
-          <a href="#scroll-tab-2" class="mdl-layout__tab">Spammer</a>
+          <a href="#scroll-tab-promoter" class="mdl-layout__tab is-active">Promote</a>
+          <!-- <a href="#scroll-tab-reattacher" class="mdl-layout__tab">Reattach</a> -->
+          <!-- <a href="#scroll-tab-spammer" class="mdl-layout__tab">Spam</a> -->
+          <a href="#scroll-tab-about" class="mdl-layout__tab">About</a>
         </div>
       </header>
     
       <main class="mdl-layout__content">
 
         <!-- Promoter -->
-        <section class="mdl-layout__tab-panel is-active" id="scroll-tab-1">
+        <section class="mdl-layout__tab-panel is-active" id="scroll-tab-promoter">
           <div class="page-content mdl-grid mdl-typography--text-center">
             <div class="mdl-cell mdl-cell--8-col">
               <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label hash-textfield">
                 <input class="mdl-textfield__input hash-input" type="text" id="tx-hash-input">
                 <label class="mdl-textfield__label" for="sample1">Transaction Hash...</label>
               </div>
-              <!-- <span>Comming soon...</span> -->
             </div>
             <div class="mdl-cell mdl-cell--2-col mdl-cell--1-offset">
               <button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored" id="promote-start-btn" disabled>
@@ -54,7 +55,7 @@
         </section>
     
         <!-- Spammer -->
-        <section class="mdl-layout__tab-panel" id="scroll-tab-2">
+        <section class="mdl-layout__tab-panel" id="scroll-tab-spammer">
           <div class="page-content mdl-grid mdl-typography--text-center">
             <div class="mdl-cell mdl-cell--2-col mdl-cell--1-offset">
               <button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored" id="spam-start-btn" disabled>
@@ -91,6 +92,108 @@
             </div>
           </div>
         </section>
+
+        <!-- Reattacher -->
+        <!-- <section class="mdl-layout__tab-panel" id="scroll-tab-reattacher">
+          <div class="page-content mdl-grid mdl-typography--text-center">
+            <div class="mdl-cell mdl-cell--8-col">
+              <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label hash-textfield">
+                <input class="mdl-textfield__input hash-input" type="text" id="tx-hash-input">
+                <label class="mdl-textfield__label" for="sample1">Transaction Hash...</label>
+              </div>
+            </div>
+            <div class="mdl-cell mdl-cell--2-col mdl-cell--1-offset">
+              <button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored" id="promote-start-btn" disabled>
+                Promote
+              </button>
+            </div>
+            <div class="mdl-cell mdl-cell--2-col mdl-cell--1-offset">
+              <button class="mdl-button mdl-js-button mdl-button--raised mdl-button--accent" id="promote-stop-btn" disabled>
+                Stop
+              </button>
+            </div>
+          </div>
+          <div class="mdl-cell mdl-cell--6-col">
+            <span id="promote-status"></span>
+          </div>
+          <div class="mdl-cell mdl-cell--6-col">
+            <span id="promote-txn-count"></span>
+          </div>
+          <div class="mdl-cell mdl-cell--6-col">
+            <span id="promote-error"></span>
+          </div>
+        </section> -->
+
+        <!-- About -->
+        <section class="mdl-layout__tab-panel" id="scroll-tab-about">
+          <ul class="demo-list-three mdl-list">
+            <li class="mdl-list__item mdl-list__item--three-line">
+              <span class="mdl-list__item-primary-content">
+                <i class="material-icons mdl-list__item-avatar">person</i>
+                <span>Developer</span>
+                <span class="mdl-list__item-text-body">
+                  Dao Le (Andy)
+                </span>
+              </span>
+            </li>
+            <li class="mdl-list__item mdl-list__item--three-line">
+              <span class="mdl-list__item-primary-content">
+                <i class="material-icons mdl-list__item-avatar">pageview</i>
+                <span>Source code</span>
+                <span class="mdl-list__item-text-body">
+                  <a href="https://github.com/leanhdaovn/iota-utilities-extension">https://github.com/leanhdaovn/iota-utilities-extension</a>
+                </span>
+              </span>
+            </li>
+            <li class="mdl-list__item mdl-list__item--three-line">
+              <span class="mdl-list__item-primary-content">
+                <i class="material-icons mdl-list__item-avatar">feedback</i>
+                <span>Send feedback</span>
+                <span class="mdl-list__item-text-body">
+                  <a href="https://docs.google.com/forms/d/e/1FAIpQLSdQEm5W9RBrxhD8qCNyJ70kmhbJjI312Q-5RR-oBLsCakgxnQ/viewform">https://docs.google.com/forms/d/e/1FAIpQLSdQEm5W9RBrxhD8qCNyJ70kmhbJjI312Q-5RR-oBLsCakgxnQ/viewform</a>
+                </span>
+              </span>
+            </li>
+            <li class="mdl-list__item mdl-list__item--three-line">
+              <span class="mdl-list__item-primary-content">
+                <i class="material-icons mdl-list__item-avatar">favorite</i>
+                <span>Donate to help maintain and develop more tools (iota)</span>
+                <span class="mdl-list__item-text-body">
+                  <span class="donation-address">
+                    FBDMLAJFTFZBXVTGLDUETUCINHROXQHPMDYNCZXLXBWVRYGWMNBRMAHBZEXEQUJTSXASAOZEJULAE9IUZFGIASOALX
+                  </span>
+                </span>
+              </span>
+            </li>
+          </ul>
+          <!-- <ul class="demo-list-item mdl-list">
+            <li class="mdl-list__item">
+              <span class="mdl-list__item-primary-content">
+                Developer | Dao Le
+              </span>
+            </li>
+            <li class="mdl-list__item">
+              <span class="mdl-list__item-primary-content">
+                Source code <br/>
+                <a href="https://github.com/leanhdaovn/iota-utilities-extension">https://github.com/leanhdaovn/iota-utilities-extension</a>
+              </span>
+            </li>
+            <li class="mdl-list__item">
+              <span class="mdl-list__item-primary-content">
+                <a href="https://docs.google.com/forms/d/e/1FAIpQLSdQEm5W9RBrxhD8qCNyJ70kmhbJjI312Q-5RR-oBLsCakgxnQ/viewform">Send feedback</a>
+              </span>
+            </li>
+            <li class="mdl-list__item">
+              <span class="mdl-list__item-primary-content">
+                Donation to help maintain and develop more tools | <br/>
+                <span class="donation-address">
+                FBDMLAJFTFZBXVTGLDUETUCINHROXQHPMDYNCZXLXBWVRYGWMNBRMAHBZEXEQUJTSXASAOZEJULAE9IUZFGIASOALX
+                </span>
+              </span>
+            </li>
+          </ul> -->
+        </section>
+        
       </main>
     </div>
   </body>

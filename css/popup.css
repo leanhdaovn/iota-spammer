@@ -16,3 +16,12 @@ body {
 .hash-input {
   font-size: 0.8em;
 }
+
+.donation-address{
+  font-size: 0.8em;
+}
+
+.mdl-list__item-avatar, .mdl-list__item-avatar.material-icons {
+    background-color: transparent;
+    color: #757575;
+}
