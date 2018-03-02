@@ -25,3 +25,9 @@ body {
     background-color: transparent;
     color: #757575;
 }
+
+@media screen and (max-width: 1024px) {
+  .mdl-layout__tab {
+      padding: 0 24px;
+  }
+}

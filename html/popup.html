@@ -14,9 +14,9 @@
           <span class="mdl-layout-title">IOTA Utilities</span>
         </div>
         <div class="mdl-layout__tab-bar mdl-js-ripple-effect">
-          <a href="#scroll-tab-promoter" class="mdl-layout__tab is-active">Promote</a>
-          <!-- <a href="#scroll-tab-reattacher" class="mdl-layout__tab">Reattach</a> -->
-          <!-- <a href="#scroll-tab-spammer" class="mdl-layout__tab">Spam</a> -->
+          <a href="#scroll-tab-promote" class="mdl-layout__tab is-active">Promote</a>
+          <a href="#scroll-tab-reattach" class="mdl-layout__tab">Reattach</a>
+          <!-- <a href="#scroll-tab-spam" class="mdl-layout__tab">Spam</a> -->
           <a href="#scroll-tab-about" class="mdl-layout__tab">About</a>
         </div>
       </header>
@@ -24,12 +24,12 @@
       <main class="mdl-layout__content">
 
         <!-- Promoter -->
-        <section class="mdl-layout__tab-panel is-active" id="scroll-tab-promoter">
+        <section class="mdl-layout__tab-panel is-active" id="scroll-tab-promote">
           <div class="page-content mdl-grid mdl-typography--text-center">
             <div class="mdl-cell mdl-cell--8-col">
               <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label hash-textfield">
-                <input class="mdl-textfield__input hash-input" type="text" id="tx-hash-input">
-                <label class="mdl-textfield__label" for="sample1">Transaction Hash...</label>
+                <input class="mdl-textfield__input hash-input" type="text" id="tx-hash-input" disabled>
+                <label class="mdl-textfield__label">Transaction Hash...</label>
               </div>
             </div>
             <div class="mdl-cell mdl-cell--2-col mdl-cell--1-offset">
@@ -55,7 +55,7 @@
         </section>
     
         <!-- Spammer -->
-        <section class="mdl-layout__tab-panel" id="scroll-tab-spammer">
+        <section class="mdl-layout__tab-panel" id="scroll-tab-spam">
           <div class="page-content mdl-grid mdl-typography--text-center">
             <div class="mdl-cell mdl-cell--2-col mdl-cell--1-offset">
               <button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored" id="spam-start-btn" disabled>
@@ -94,35 +94,32 @@
         </section>
 
         <!-- Reattacher -->
-        <!-- <section class="mdl-layout__tab-panel" id="scroll-tab-reattacher">
+        <section class="mdl-layout__tab-panel" id="scroll-tab-reattach">
           <div class="page-content mdl-grid mdl-typography--text-center">
             <div class="mdl-cell mdl-cell--8-col">
               <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label hash-textfield">
-                <input class="mdl-textfield__input hash-input" type="text" id="tx-hash-input">
-                <label class="mdl-textfield__label" for="sample1">Transaction Hash...</label>
+                <input class="mdl-textfield__input hash-input" type="text" id="tx-hash-input" disabled>
+                <label class="mdl-textfield__label">Transaction Hash...</label>
               </div>
             </div>
             <div class="mdl-cell mdl-cell--2-col mdl-cell--1-offset">
-              <button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored" id="promote-start-btn" disabled>
-                Promote
+              <button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored" id="reattach-start-btn" disabled>
+                Submit Reattach
               </button>
             </div>
             <div class="mdl-cell mdl-cell--2-col mdl-cell--1-offset">
-              <button class="mdl-button mdl-js-button mdl-button--raised mdl-button--accent" id="promote-stop-btn" disabled>
+              <button class="mdl-button mdl-js-button mdl-button--raised mdl-button--accent" id="reattach-stop-btn" disabled>
                 Stop
               </button>
             </div>
           </div>
           <div class="mdl-cell mdl-cell--6-col">
-            <span id="promote-status"></span>
+            <span id="reattach-status"></span>
           </div>
           <div class="mdl-cell mdl-cell--6-col">
-            <span id="promote-txn-count"></span>
+            <span id="reattach-error"></span>
           </div>
-          <div class="mdl-cell mdl-cell--6-col">
-            <span id="promote-error"></span>
-          </div>
-        </section> -->
+        </section>
 
         <!-- About -->
         <section class="mdl-layout__tab-panel" id="scroll-tab-about">
