@@ -173,6 +173,12 @@ chrome.extension.onConnect.addListener(port => {
         case 'STOP_PROMOTING':
           stopPromoting(promoter);
           break;
+        case 'START_REATTACH':
+          // startReattach(promoter, msg.payload.transactionHash);
+          break;
+        case 'STOP_REATTACH':
+          // stopReattach(promoter);
+          break;
       }
     }
   });
