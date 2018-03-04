@@ -12,7 +12,7 @@ const DEFAULT_REATTACH_STATE = {
   errorMessage: null
 };
 
-const getPromoteState = (callback) => {
+const getPromoteState = callback => {
   chrome.storage.local.get({ promoteState: DEFAULT_PROMOTE_STATE }, function ({ promoteState }) {
     callback(promoteState);
   });
@@ -25,7 +25,7 @@ const updatePromoteState = update => {
   });
 };
 
-const getReattachState = (callback) => {
+const getReattachState = callback => {
   chrome.storage.local.get({ reattachState: DEFAULT_REATTACH_STATE }, function ({ reattachState }) {
     callback(reattachState);
   });

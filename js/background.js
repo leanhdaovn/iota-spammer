@@ -4,6 +4,7 @@ const blackListedProviders = [];
 const transactions = [];
 let totalTx = 0;
 let promoter;
+let reattacher;
 
 const getRandomItem = (array) => {
   const randomIndex = Math.floor(Math.random() * array.length);
@@ -33,6 +34,7 @@ getRandomProvider()
     curl.init();
     curl.overrideAttachToTangle(iotaObj);
     promoter = new Promoter({ iotaObj: iotaObj, curlObj: curl });    
+    reattacher = new Reattacher({ iotaObj: iotaObj });    
   });
 
 
@@ -133,7 +135,7 @@ const startPromoting = (promoter, txHash) => {
         // switchProvider().then(resolve);
         stopPromoting(promoter);
         updatePromoteState(promoteState => {
-          promoteState.errorMessage = 'Some error occurred. Please try again.';
+          promoteState.errorMessage = 'Some error occurred. Please try again or Reattach.';
         });
         resolve();
       });
@@ -152,6 +154,47 @@ const stopPromoting = promoter => {
   promoter.stop();
   updatePromoteState(promoteState => {
     promoteState.working = false;
+  });
+};
+
+const startReattach = (reattacher, txnHash) => {
+  updateReattachState(reattachState => {
+    reattachState.working = true;
+    reattachState.originalTransaction = txnHash;
+    reattachState.createdTransaction = null;
+    reattachState.errorMessage = null;
+  });
+
+  reattacher.onReattachSuccess = result => {
+    console.log('onReattachSuccess', result);
+    let createdTransaction = null;
+    if (result && result.length) {
+      createdTransaction = result[0].hash;
+    }
+
+    updateReattachState(reattachState => {
+      reattachState.working = false;
+      reattachState.createdTransaction = createdTransaction;
+    });
+  };
+  
+  reattacher.onReattachFailure = error => {
+    console.error('onReattachFailure', error);
+    updateReattachState(reattachState => {
+      reattachState.working = false;
+      reattachState.errorMessage = 'Reattach failed. Please try again!';
+    });
+  };
+
+  reattacher.reattach(txnHash);
+};
+
+const stopReattach = (reattacher, txnHash) => {
+  updateReattachState(reattachState => {
+    reattachState.working = false;
+    reattachState.originalTransaction = null;
+    reattachState.createdTransaction = null;
+    reattachState.errorMessage = null;
   });
 };
 
@@ -174,10 +217,10 @@ chrome.extension.onConnect.addListener(port => {
           stopPromoting(promoter);
           break;
         case 'START_REATTACH':
-          // startReattach(promoter, msg.payload.transactionHash);
+          startReattach(reattacher, msg.payload.transactionHash);
           break;
         case 'STOP_REATTACH':
-          // stopReattach(promoter);
+          stopReattach(reattacher);
           break;
       }
     }
