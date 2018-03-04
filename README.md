@@ -1,5 +1,7 @@
 # IOTA utilities extension
 
+Install at https://chrome.google.com/webstore/detail/iota-utilities/ipnmkjhnbmheomjegeaifflgbmjgpfja
+
 ## Features
 Some utilities for IOTA users inside your browser
 - Promote
