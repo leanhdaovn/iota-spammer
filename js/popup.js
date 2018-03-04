@@ -101,15 +101,21 @@ reattachStopBtn.onclick = e => {
 const reattachTxHashInput = document.getElementById('reattach-tx-hash-input');
 const reattachStatusElement = document.getElementById('reattach-status');
 const reattachErrorElement = document.getElementById('reattach-error');
+const reattachOriginalTxElement = document.getElementById('reattach-original-txn');
 const reattachCreatedTxElement = document.getElementById('reattach-created-txn');
 
 const displayReattachState = () => {
   getReattachState(reattachState => {
+    const txnUrl = `https://thetangle.org/transaction/${reattachState.originalTransaction}`;
+
+    reattachOriginalTxElement.innerHTML = 
+      reattachState.originalTransaction ? 
+      `Original transaction: <a href="${txnUrl}">${reattachState.originalTransaction}</a>` : null;
+    
     if (reattachState.working) {
-      const txnUrl = `https://thetangle.org/transaction/${reattachState.originalTransaction}`;
-      reattachStatusElement.innerHTML = `Promoting transaction <a href="${txnUrl}">${reattachState.originalTransaction}</a>`;
+      reattachStatusElement.innerHTML = `Reattaching...`;
       reattachStartBtn.disabled = true;
-      reattachStopBtn.disabled = false;
+      reattachStopBtn.innerHTML = 'Stop';
       reattachTxHashInput.disabled = true;
       reattachErrorElement.innerHTML = null;
       reattachCreatedTxElement.innerHTML = null;
@@ -117,11 +123,12 @@ const displayReattachState = () => {
       const createdTxnUrl = `https://thetangle.org/transaction/${reattachState.createdTransaction}`;
       reattachStatusElement.innerHTML = '';
       reattachStartBtn.disabled = false;
-      reattachStopBtn.disabled = true;
+      reattachStopBtn.innerHTML = 'Clear';
       reattachTxHashInput.disabled = false;
       reattachErrorElement.innerHTML = reattachState.errorMessage;
       reattachCreatedTxElement.innerHTML = 
-        reattachState.createdTransaction ? createdTxnUrl : null;
+        reattachState.createdTransaction ? 
+        `New transaction: <a href="${createdTxnUrl}">${reattachState.createdTransaction}</a>` : null;
     }
   });
 };
