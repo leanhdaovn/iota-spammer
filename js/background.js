@@ -136,6 +136,7 @@ const startPromoting = (promoter, txHash) => {
         stopPromoting(promoter);
         updatePromoteState(promoteState => {
           promoteState.errorMessage = 'Some error occurred. Please try again or Reattach.';
+          promoteState.working = false;
         });
         resolve();
       });
